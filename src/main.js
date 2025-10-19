@@ -6,11 +6,14 @@ camera.position.z = 5;
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild( renderer.domElement );
 
 const geometry = new THREE.BoxGeometry( 1, 1, 1 );
 const material = new THREE.MeshPhysicalMaterial( { color: 0xFF7DE9 } );
 const cube = new THREE.Mesh( geometry, material ); // takes shape and material
+cube.castShadow = true;
 scene.add( cube ); // add to scene
 
 const loader = new THREE.TextureLoader();
@@ -30,14 +33,17 @@ const floorMaterial = new THREE.MeshStandardMaterial( { map: floorTexture });
 const floor = new THREE.Mesh( floorGeometry, floorMaterial );
 floor.rotation.x = -Math.PI / 2; // rotate 90 degrees into screen to make floor instead of wall
 floor.position.y = -1;
+floor.receiveShadow = true;
 scene.add( floor )
 
 const light1 = new THREE.PointLight( 0xffffff, 10 ); // colour and intensity
 light1.position.set( 3, 2, 1 ); // position
+light1.castShadow = true;
 scene.add( light1 );
 
 const light2 = new THREE.PointLight( 0xffffff, 10 );
 light2.position.set( -3, 2, 1 );
+light2.castShadow = true;
 scene.add( light2 );
 
 const helper1 = new THREE.PointLightHelper(light1, 0.3); // helper to visualize light, 2nd param is size of geometry
