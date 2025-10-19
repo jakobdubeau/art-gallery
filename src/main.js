@@ -20,6 +20,11 @@ floorTexture.wrapS = THREE.RepeatWrapping; // horizontal tiling
 floorTexture.wrapT = THREE.RepeatWrapping; // vertical tiling
 floorTexture.repeat.set( 4, 4 ); // repeat param times for s and t
 
+floorTexture.minFilter = THREE.NearestFilter; // picks nearest pixel colour instead of blending when in between tiles, for far away
+floorTexture.magFilter = THREE.NearestFilter; // for close up
+
+floorTexture.anisotropy = renderer.capabilities.getMaxAnisotropy(); // makes shallow angles look less blurry
+
 const floorGeometry = new THREE.PlaneGeometry( 10, 10 );
 const floorMaterial = new THREE.MeshStandardMaterial( { map: floorTexture });
 const floor = new THREE.Mesh( floorGeometry, floorMaterial );
