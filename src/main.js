@@ -13,8 +13,15 @@ const material = new THREE.MeshPhysicalMaterial( { color: 0xFF7DE9 } );
 const cube = new THREE.Mesh( geometry, material ); // takes shape and material
 scene.add( cube ); // add to scene
 
+const loader = new THREE.TextureLoader();
+const floorTexture = loader.load('/assets/textures/floor/checker_floor.avif');
+
+floorTexture.wrapS = THREE.RepeatWrapping; // horizontal tiling
+floorTexture.wrapT = THREE.RepeatWrapping; // vertical tiling
+floorTexture.repeat.set( 4, 4 ); // repeat param times for s and t
+
 const floorGeometry = new THREE.PlaneGeometry( 10, 10 );
-const floorMaterial = new THREE.MeshPhysicalMaterial( { color: 0x00ff00 })
+const floorMaterial = new THREE.MeshStandardMaterial( { map: floorTexture });
 const floor = new THREE.Mesh( floorGeometry, floorMaterial );
 floor.rotation.x = -Math.PI / 2; // rotate 90 degrees into screen to make floor instead of wall
 floor.position.y = -1;
