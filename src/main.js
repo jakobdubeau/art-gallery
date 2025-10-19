@@ -16,7 +16,7 @@ scene.add( cube ); // add to scene
 const floorGeometry = new THREE.PlaneGeometry( 10, 10 );
 const floorMaterial = new THREE.MeshPhysicalMaterial( { color: 0x00ff00 })
 const floor = new THREE.Mesh( floorGeometry, floorMaterial );
-floor.rotation.x = -Math.PI / 2; // rotate 90 degrees to make floor instead of wall
+floor.rotation.x = -Math.PI / 2; // rotate 90 degrees into screen to make floor instead of wall
 floor.position.y = -1;
 scene.add( floor )
 
