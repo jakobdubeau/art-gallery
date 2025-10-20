@@ -6,6 +6,7 @@ export class Player {
     constructor( camera, domElement ) {
 
         this.camera = camera;
+        this.domElement = domElement;
         this.controls = new PointerLockControls( camera, domElement );
 
         this.keys = {}
@@ -27,8 +28,8 @@ export class Player {
     addListeners() {
 
         this.domElement.addEventListener( 'click', () => this.controls.lock());
-        this.domElement.addEventListener( 'keydown', e => { this.keys[e.code] = true });
-        this.domElement.addEventListener( 'keyup', e => { this.keys[e.code] = false });
+        document.addEventListener( 'keydown', e => { this.keys[e.code] = true });
+        document.addEventListener( 'keyup', e => { this.keys[e.code] = false });
 
     }
 

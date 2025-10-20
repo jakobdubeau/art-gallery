@@ -5,9 +5,9 @@ export class World {
     constructor( renderer ) {
 
         this.scene = new THREE.Scene();
-        this.addFloor(renderer);
+        this.addFloor( renderer );
         this.addLighting();
-        this.addSky();
+        this.addSky( renderer );
         this.addCube();
     }
 
@@ -42,18 +42,19 @@ export class World {
         const loader = new THREE.TextureLoader();
         const skyTexture = loader.load('/assets/textures/sky/mb_sky.jpg');
 
+        skyTexture.wrapS = THREE.RepeatWrapping;
+        skyTexture.wrapT = THREE.ClampToEdgeWrapping;
+        skyTexture.minFilter = THREE.LinearMipmapLinearFilter;
+        skyTexture.magFilter = THREE.LinearFilter;
+        skyTexture.generateMipmaps = true;
+        skyTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+        skyTexture.colorSpace = THREE.SRGBColorSpace;
+
         const geometry = new THREE.SphereGeometry( 1000, 32, 32, 0, Math.PI * 2, 0, Math.PI * 0.60 );
         const material = new THREE.MeshBasicMaterial( { map: skyTexture, side: THREE.BackSide });
         const sky = new THREE.Mesh( geometry, material );
-        this.scene.add(sky)
-        
-        skyTexture.wrapS = THREE.RepeatWrapping
-        skyTexture.wrapT = THREE.ClampToEdgeWrapping
-        skyTexture.minFilter = THREE.LinearMipmapLinearFilter
-        skyTexture.magFilter = THREE.LinearFilter
-        skyTexture.generateMipmaps = true
-        skyTexture.anisotropy = renderer.capabilities.getMaxAnisotropy()
-        skyTexture.colorSpace = THREE.SRGBColorSpace
+        this.scene.add(sky);
+        this.sky = sky;
 
     }
 
@@ -90,8 +91,8 @@ export class World {
 
     update() {
 
-        this.cube.rotation.x += 0.006
-        this.cube.rotation.y += 0.006
-        
+        this.cube.rotation.x += 0.006;
+        this.cube.rotation.y += 0.006;
+
     }
 }
