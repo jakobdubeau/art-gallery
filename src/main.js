@@ -129,7 +129,7 @@ function animate() {
     sky.position.copy( camera.position )
 
     // Math.min is so you cant jump big distances on frame skips
-    const delta = Math.min( clock.getDelta(), 0.1 ) // get seconds since last frame so you move the same amount regardless of fps
+    const delta = Math.min( clock.getDelta(), 0.05 ) // get seconds since last frame so you move the same amount regardless of fps
 
     // speed
 
