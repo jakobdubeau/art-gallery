@@ -15,6 +15,27 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild( renderer.domElement );
 
+// sky texture
+
+const loader = new THREE.TextureLoader();
+const skyTexture = loader.load('/assets/textures/sky/mb_sky.jpg');
+
+// sky
+
+const skyGeometry = new THREE.SphereGeometry( 1000, 32, 32, 0, Math.PI * 2, 0, Math.PI * 0.60 );
+const skyMaterial = new THREE.MeshBasicMaterial( { map: skyTexture, side: THREE.BackSide });
+const sky = new THREE.Mesh( skyGeometry, skyMaterial );
+scene.add(sky)
+
+skyTexture.wrapS = THREE.RepeatWrapping
+skyTexture.wrapT = THREE.ClampToEdgeWrapping
+skyTexture.minFilter = THREE.LinearMipmapLinearFilter
+skyTexture.magFilter = THREE.LinearFilter
+skyTexture.generateMipmaps = true
+skyTexture.anisotropy = renderer.capabilities.getMaxAnisotropy()
+skyTexture.colorSpace = THREE.SRGBColorSpace
+
+
 // cube
 
 const geometry = new THREE.BoxGeometry( 1, 1, 1 );
@@ -25,7 +46,6 @@ scene.add( cube ); // add to scene
 
 // floor texture
 
-const loader = new THREE.TextureLoader();
 const floorTexture = loader.load('/assets/textures/floor/checker_floor.avif');
 
 floorTexture.wrapS = THREE.RepeatWrapping; // horizontal tiling
@@ -104,8 +124,12 @@ function animate() {
     cube.rotation.x += 0.006;
     cube.rotation.y += 0.006;
 
+    // sky
+
+    sky.position.copy( camera.position )
+
     // Math.min is so you cant jump big distances on frame skips
-    const delta = Math.min( clock.getDelta(), 0.05 ) // get seconds since last frame so you move the same amount regardless of fps
+    const delta = Math.min( clock.getDelta(), 0.1 ) // get seconds since last frame so you move the same amount regardless of fps
 
     // speed
 
