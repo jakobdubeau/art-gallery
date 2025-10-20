@@ -5,6 +5,7 @@ import { PointerLockControls } from 'three/addons/controls/PointerLockControls.j
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 ); // 75 fov,  aspect ratio, min/max distance from cam rendered
+camera.position.set(0, 0, 5)
 
 // renderer
 
@@ -90,6 +91,13 @@ const groundHeight = 0;
 let velocityY = 0;
 let onGround = true;
 
+// sprinting
+
+let baseSpeed = 3;
+let sprintMultiplier = 1.5;
+let normalFov = 75;
+let sprintFov = 90;
+
 // stuff to make stuff happen
 
 function animate() {
@@ -97,9 +105,18 @@ function animate() {
     cube.rotation.y += 0.006;
 
     // Math.min is so you cant jump big distances on frame skips
-    const delta = Math.min( clock.getDelta(), 0.1 ) // get seconds since last frame so you move the same amount regardless of fps
-    const speed = 3 * delta // more seconds in between frames (like 30fps) = move further, this way 30fps and 120fps moves same amount even though 120fps move more frequently but smaller
+    const delta = Math.min( clock.getDelta(), 0.05 ) // get seconds since last frame so you move the same amount regardless of fps
 
+    // speed
+
+    const isSprinting = keys['ShiftLeft'];
+    const moveSpeed = baseSpeed * (isSprinting ? sprintMultiplier : 1); // if sprinting, sprint speed, otherwise base speed * 1
+    const speed = moveSpeed * delta; // more seconds in between frames (like 30fps) = move further, this way 30fps and 120fps moves same amount even though 120fps move more frequently but smaller
+
+    const targetFov = isSprinting ? sprintFov : normalFov;
+    camera.fov += (targetFov - camera.fov) * 0.1;
+    camera.updateProjectionMatrix();
+    
     // movement
     
     if (keys['KeyW']) {
@@ -131,6 +148,7 @@ function animate() {
         onGround = false;
     }
 
+    controls.getDirection(new THREE.Vector3())
 
     renderer.render( scene, camera ); // purpose: draw everything in scene as seen from camera onto the screen
 }
