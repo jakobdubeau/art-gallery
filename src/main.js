@@ -5,7 +5,6 @@ import { PointerLockControls } from 'three/addons/controls/PointerLockControls.j
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 ); // 75 fov,  aspect ratio, min/max distance from cam rendered
-camera.position.z = 5;
 
 // renderer
 
@@ -82,6 +81,15 @@ document.addEventListener( 'keyup', e => { keys[e.code] = false });
 
 const clock = new THREE.Clock()
 
+// gravity/jumping
+
+const gravity = 9.8;
+const jumpStrength = 4;
+const groundHeight = 0;
+
+let velocityY = 0;
+let onGround = true;
+
 // stuff to make stuff happen
 
 function animate() {
@@ -92,6 +100,8 @@ function animate() {
     const delta = Math.min( clock.getDelta(), 0.1 ) // get seconds since last frame so you move the same amount regardless of fps
     const speed = 3 * delta // more seconds in between frames (like 30fps) = move further, this way 30fps and 120fps moves same amount even though 120fps move more frequently but smaller
 
+    // movement
+    
     if (keys['KeyW']) {
         controls.moveForward(speed);
     }
@@ -104,6 +114,23 @@ function animate() {
     if (keys['KeyD']) {
         controls.moveRight(speed);
     }
+
+    // gravity/jumping
+
+    velocityY -= gravity * delta;
+    camera.position.y += velocityY * delta;
+
+    if (camera.position.y <= groundHeight) {
+        camera.position.y = groundHeight;
+        velocityY = 0;
+        onGround = true;
+    }
+
+    if (onGround && keys['Space']) {
+        velocityY = jumpStrength;
+        onGround = false;
+    }
+
 
     renderer.render( scene, camera ); // purpose: draw everything in scene as seen from camera onto the screen
 }
