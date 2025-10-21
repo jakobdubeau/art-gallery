@@ -11,7 +11,7 @@ export class World {
         this.scene = new THREE.Scene();
 
         this.floor = new Floor( renderer, '/assets/textures/floor/checker_floor.avif' );
-        this.cube = new Cube( 0xFF7DE9 );
+        this.cube = new Cube( 0xFF7DE9, [0, 0, 0] );
         this.light1 = new Light( 0xffffff, 10, [3, 2, 1] );
         this.light2 = new Light( 0xffffff, 10, [-3, 2, 1] );
         this.sky = new Sky( renderer, '/assets/textures/sky/mb_sky.jpg' );
@@ -23,9 +23,10 @@ export class World {
         this.sky.addTo( this.scene );
     }
 
-    update() {
+    update( camera ) {
 
         this.cube.update();
+        this.sky.update( camera );
 
     }
 }

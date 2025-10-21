@@ -9,7 +9,7 @@ export class Player {
         this.domElement = domElement;
         this.controls = new PointerLockControls( camera, domElement );
 
-        this.keys = {}
+        this.keys = {};
         
         this.baseSpeed = 3;
         this.sprintMultiplier = 1.5;
