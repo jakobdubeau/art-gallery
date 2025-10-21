@@ -1,6 +1,6 @@
-import * as THREE from 'three'
-import { World } from './World.js'
-import { Player } from './Player.js'
+import * as THREE from 'three';
+import { World } from './World.js';
+import { Player } from './Player.js';
 
 export class Game {
 
