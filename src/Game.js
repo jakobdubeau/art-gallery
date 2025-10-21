@@ -33,12 +33,7 @@ export class Game {
         const delta = Math.min( this.clock.getDelta(), 0.05 ); // get seconds since last frame so you move the same amount regardless of fps
 
         this.player.update( delta );
-        this.world.update();
-
-        if ( this.world.sky ) {
-            this.world.sky.position.copy(this.camera.position);
-        }
-
+        this.world.update( this.camera );
         this.renderer.render(this.world.scene, this.camera);
 
     }

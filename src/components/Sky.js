@@ -22,7 +22,7 @@ export class Sky {
 
     addTo( scene ) {
 
-        scene.add( this.mesh);
+        scene.add( this.mesh );
 
     }
 
